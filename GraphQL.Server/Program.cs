@@ -1,4 +1,6 @@
 using GraphQL.Server.Data;
+using GraphQL.Server.Mutations;
+using GraphQL.Server.Queries;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,11 @@ builder.Services
     .AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=books.db"));
 
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,7 +28,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints?.MapGraphQL();
+});
 
 app.Run();
 

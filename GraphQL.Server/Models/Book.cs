@@ -16,5 +16,7 @@ public class Book
     [Required]
     [MaxLength(10)]
     public double Price { get; set; }
+
+    public int AuthorId { get; set; }
     public Author Author { get; set; }
 }

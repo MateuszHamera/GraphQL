@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraphQL.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240924170640_Init")]
+    [Migration("20240925123412_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -72,12 +72,17 @@ namespace GraphQL.Server.Migrations
             modelBuilder.Entity("GraphQL.Server.Models.Book", b =>
                 {
                     b.HasOne("GraphQL.Server.Models.Author", "Author")
-                        .WithMany()
+                        .WithMany("Books")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("GraphQL.Server.Models.Author", b =>
+                {
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

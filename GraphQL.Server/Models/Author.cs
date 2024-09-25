@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
 
 namespace GraphQL.Server.Models;
 
@@ -12,4 +13,6 @@ public class Author
 
     [MaxLength(3)]
     public int Age { get; set; }
+
+    public ICollection<Book> Books { get; set; } = new List<Book>();
 }

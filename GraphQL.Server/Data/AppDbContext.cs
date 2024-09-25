@@ -22,6 +22,8 @@ public class AppDbContext : DbContext
 
         modelBuilder
             .Entity<Book>()
-            .HasOne(a => a.Author);
+            .HasOne(b => b.Author)
+            .WithMany(a => a.Books)
+            .HasForeignKey(b => b.AuthorId);
     }
 }

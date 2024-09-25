@@ -1,6 +1,7 @@
 using GraphQL.Server.Data;
 using GraphQL.Server.Mutations;
 using GraphQL.Server.Queries;
+using GraphQL.Server.Subscriptions;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +18,9 @@ builder.Services
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
-    .AddMutationType<Mutation>();
+    .AddMutationType<Mutation>()
+    .AddSubscriptionType<Subscription>() 
+    .AddInMemorySubscriptions(); ;
 
 var app = builder.Build();
 
@@ -27,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseWebSockets();
 
 app.UseRouting();
 

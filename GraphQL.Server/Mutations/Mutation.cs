@@ -2,6 +2,9 @@
 using GraphQL.Server.Inputs;
 using GraphQL.Server.Models;
 using GraphQL.Server.Payloads;
+using GraphQL.Server.Subscriptions;
+using HotChocolate.Subscriptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraphQL.Server.Mutations;
 
@@ -44,6 +47,29 @@ public class Mutation
 
         await context.Books.AddAsync(book);
         await context.SaveChangesAsync();
+
+        return new AddBookPayload(book);
+    }
+
+    public async Task<AddBookPayload> UpdateBookPriceAsync(
+        int bookId, double newPrice,
+        [Service] AppDbContext context,
+        [Service] ITopicEventSender eventSender)
+    {
+        var book = await context.Books
+            .Include(b => b.Author)  
+            .FirstOrDefaultAsync(b => b.Id == bookId);
+
+        if (book == null)
+        {
+            throw new Exception($"Book with Id {bookId} not found.");
+        }
+
+        book.Price = newPrice;
+        await context.SaveChangesAsync();
+
+
+        await eventSender.SendAsync(nameof(Subscription.OnBookPriceUpdated), book);
 
         return new AddBookPayload(book);
     }

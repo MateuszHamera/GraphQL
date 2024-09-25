@@ -7,13 +7,9 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(
     DbContextOptions<AppDbContext> options)
-    : base(options)
-    {
-        
-    }
+    : base(options){}
 
     public DbSet<Author> Authors { get; set; } = default!;
-
     public DbSet<Book> Books { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

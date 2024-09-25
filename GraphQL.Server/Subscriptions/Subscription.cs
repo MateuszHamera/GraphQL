@@ -6,5 +6,6 @@ public class Subscription
 {
     [Subscribe]
     [Topic]
-    public Book OnBookPriceUpdated([EventMessage] Book book) => book;
+    public Book OnBookPriceUpdated(
+        [EventMessage] Book book) => book;
 }

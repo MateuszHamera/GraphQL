@@ -51,7 +51,7 @@ public class Mutation
         return new AddBookPayload(book);
     }
 
-    public async Task<AddBookPayload> UpdateBookPriceAsync(
+    public async Task<UpdateBookPayload> UpdateBookPriceAsync(
         int bookId, double newPrice,
         [Service] AppDbContext context,
         [Service] ITopicEventSender eventSender)
@@ -68,10 +68,9 @@ public class Mutation
         book.Price = newPrice;
         await context.SaveChangesAsync();
 
-
         await eventSender.SendAsync(nameof(Subscription.OnBookPriceUpdated), book);
 
-        return new AddBookPayload(book);
+        return new UpdateBookPayload(book);
     }
 
 }

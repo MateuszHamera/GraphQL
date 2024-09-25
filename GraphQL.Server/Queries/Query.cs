@@ -9,7 +9,16 @@ public class Query
     public async Task<List<Author>> GetAuthors(
         [Service] AppDbContext context)
     {
-        return await context.Authors.Include(x => x.Books).ToListAsync();
+        return await context.Authors
+            .Include(x => x.Books)
+            .ToListAsync();
+    }
+
+    public async Task<Author> GetAuthorById(
+        int id,
+        [Service] AppDbContext context)
+    {
+        return await context.Authors.Include(x => x.Books).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<List<Book>> GetBooks(

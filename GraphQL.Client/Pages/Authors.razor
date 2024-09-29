@@ -1,0 +1,25 @@
+﻿@page "/authors"
+
+<PageTitle>Authors</PageTitle>
+
+<h1>Authors</h1>
+
+<UseGetAuthors Context="result">
+    <LoadingContent>
+        Loading ...
+    </LoadingContent>
+    <ChildContent>
+        <ul>
+            @foreach (var item in result.Authors!)
+            {
+                <li>Name: @item.Name, Age: @item.Age</li>
+            }
+        </ul>
+    </ChildContent>
+    <ErrorContent>
+        Something went wrong ...<br />
+        @result.First().Message
+    </ErrorContent>
+</UseGetAuthors>
+
+

@@ -11,6 +11,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Blazor-Client",
+        builder => builder
+            .WithOrigins("https://localhost:7148") 
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials());
+});
+
 builder.Services
     .AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=books.db"));
@@ -32,6 +43,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseWebSockets();
+
+app.UseCors("Blazor-Client");
 
 app.UseRouting();
 

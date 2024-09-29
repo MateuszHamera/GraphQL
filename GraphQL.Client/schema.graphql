@@ -1,0 +1,61 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Query {
+  authors: [Author!]!
+  authorById(id: Int!): Author!
+  books: [Book!]!
+}
+
+type Mutation {
+  addAuthor(input: AddAuthorInput!): AddAuthorPayload!
+  addBook(input: AddBookInput!): AddBookPayload!
+  updateBookPrice(bookId: Int! newPrice: Float!): UpdateBookPayload!
+}
+
+type Subscription {
+  onBookPriceUpdated: Book!
+}
+
+type AddAuthorPayload {
+  author: Author!
+}
+
+type Book {
+  id: Int!
+  title: String!
+  description: String!
+  price: Float!
+  authorId: Int!
+  author: Author!
+}
+
+type Author {
+  id: Int!
+  name: String!
+  age: Int!
+  books: [Book!]!
+}
+
+input AddAuthorInput {
+  name: String!
+  age: Int!
+}
+
+type AddBookPayload {
+  book: Book!
+}
+
+input AddBookInput {
+  title: String!
+  description: String!
+  price: Float!
+  authorId: Int!
+}
+
+type UpdateBookPayload {
+  book: Book!
+}

@@ -1,0 +1,12 @@
+{
+  "projects": [
+    {
+      "schema": [
+        "GraphQL.Client/schema.graphql"
+      ],
+      "documents": [
+        "GraphQL.Client/**/*.graphql"
+      ]
+    }
+  ]
+}

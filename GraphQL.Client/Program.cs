@@ -8,4 +8,9 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+builder.Services
+    .AddMyGraphServer()
+    .ConfigureHttpClient(client => 
+    client.BaseAddress = new Uri("https://localhost:7034/graphql"));
+
 await builder.Build().RunAsync();

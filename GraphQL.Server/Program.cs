@@ -28,10 +28,12 @@ builder.Services
 
 builder.Services
     .AddGraphQLServer()
+    .AddFiltering()
+    .AddSorting()
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
-    .AddSubscriptionType<Subscription>() 
-    .AddInMemorySubscriptions(); ;
+    .AddSubscriptionType<Subscription>()
+    .AddInMemorySubscriptions();
 
 var app = builder.Build();
 
@@ -51,6 +53,13 @@ app.UseRouting();
 app.UseEndpoints(endpoints =>
 {
     endpoints?.MapGraphQL();
+});
+
+app.MapGet("authors", (AppDbContext context) => {
+    Query query = new Query();
+    var result = query.GetAuthors(context);
+
+    return result;
 });
 
 app.Run();

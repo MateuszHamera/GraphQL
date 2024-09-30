@@ -1,0 +1,60 @@
+﻿@page "/bookPrice"
+@inject MyGraphClient Client
+
+<h3>Book Price Updates</h3>
+
+@if (bookUpdates.Count == 0)
+{
+    <p>No price updates yet.</p>
+}
+else
+{
+    <ul>
+        @foreach (var update in bookUpdates)
+        {
+            <li>@update.Time - Title: @update.Title, Price: @update.Price</li>
+        }
+    </ul>
+}
+
+@code {
+    // A class to store the book update information (title, price, time)
+    private class BookUpdate
+    {
+        public string Title { get; set; }
+        public double Price { get; set; }
+        public string Time { get; set; }
+    }
+
+    // List to store updates with title, price, and time
+    private List<BookUpdate> bookUpdates = new List<BookUpdate>();
+    private IDisposable? subscription;
+
+    protected override void OnInitialized()
+    {
+        // Subscribe to book price updates
+        subscription = Client.OnBookPriceUpdated.Watch().Subscribe(result =>
+        {
+            var updatedPrice = result.Data.OnBookPriceUpdated.Price;
+            var updatedTitle = result.Data.OnBookPriceUpdated.Title;
+            var currentTime = DateTime.Now.ToString("HH:mm:ss");
+
+            // Add the new update (title, price, and timestamp) to the list
+            bookUpdates.Add(new BookUpdate
+            {
+                Title = updatedTitle,
+                Price = updatedPrice,
+                Time = currentTime
+            });
+
+            // Refresh the UI to show the new update
+            InvokeAsync(StateHasChanged);
+        });
+    }
+
+    // Unsubscribe when the component is disposed
+    public void Dispose()
+    {
+        subscription?.Dispose();
+    }
+}

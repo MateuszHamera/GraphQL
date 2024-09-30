@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <GraphQL Remove="queries\GetAuthors.graphql" />
-    <GraphQL Remove="subscriptions\OnBookPriceUpdated.graphql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,11 +17,10 @@
     <PackageReference Include="StrawberryShake.CodeGeneration.CSharp.Analyzers" Version="12.22.4" />
     <PackageReference Include="StrawberryShake.Transport.Http" Version="13.9.12" />
 	  <PackageReference Include="HotChocolate.Data" Version="13.9.13" />
-	  <PackageReference Include="StrawberryShake.Transport.WebSockets" Version="13.9.14" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Subscriptions\" />
+    <Folder Include="NewFolder\" />
     <Folder Include="Queries\" />
   </ItemGroup>
 

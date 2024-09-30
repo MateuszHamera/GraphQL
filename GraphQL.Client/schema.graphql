@@ -5,7 +5,7 @@ schema {
 }
 
 type Query {
-  authors: [Author!]!
+  authors(order: [AuthorSortInput!] where: AuthorFilterInput): [Author!]!
   authorById(id: Int!): Author!
   books: [Book!]!
 }
@@ -18,6 +18,89 @@ type Mutation {
 
 type Subscription {
   onBookPriceUpdated: Book!
+}
+
+input AuthorSortInput {
+  id: SortEnumType
+  name: SortEnumType
+  age: SortEnumType
+}
+
+input AuthorFilterInput {
+  and: [AuthorFilterInput!]
+  or: [AuthorFilterInput!]
+  id: IntOperationFilterInput
+  name: StringOperationFilterInput
+  age: IntOperationFilterInput
+  books: ListFilterInputTypeOfBookFilterInput
+}
+
+enum SortEnumType {
+  ASC
+  DESC
+}
+
+input IntOperationFilterInput {
+  eq: Int
+  neq: Int
+  in: [Int]
+  nin: [Int]
+  gt: Int
+  ngt: Int
+  gte: Int
+  ngte: Int
+  lt: Int
+  nlt: Int
+  lte: Int
+  nlte: Int
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  or: [StringOperationFilterInput!]
+  eq: String
+  neq: String
+  contains: String
+  ncontains: String
+  in: [String]
+  nin: [String]
+  startsWith: String
+  nstartsWith: String
+  endsWith: String
+  nendsWith: String
+}
+
+input ListFilterInputTypeOfBookFilterInput {
+  all: BookFilterInput
+  none: BookFilterInput
+  some: BookFilterInput
+  any: Boolean
+}
+
+input BookFilterInput {
+  and: [BookFilterInput!]
+  or: [BookFilterInput!]
+  id: IntOperationFilterInput
+  title: StringOperationFilterInput
+  description: StringOperationFilterInput
+  price: FloatOperationFilterInput
+  authorId: IntOperationFilterInput
+  author: AuthorFilterInput
+}
+
+input FloatOperationFilterInput {
+  eq: Float
+  neq: Float
+  in: [Float]
+  nin: [Float]
+  gt: Float
+  ngt: Float
+  gte: Float
+  ngte: Float
+  lt: Float
+  nlt: Float
+  lte: Float
+  nlte: Float
 }
 
 type AddAuthorPayload {

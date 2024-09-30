@@ -3,7 +3,7 @@
   "documents": "**/*.graphql",
   "extensions": {
     "strawberryShake": {
-      "name": "MyGraphServer",
+      "name": "MyGraphClient",
       "url": "https://localhost:7034/graphql/",
       "records": {
         "inputs": false,

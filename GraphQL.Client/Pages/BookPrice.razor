@@ -3,31 +3,22 @@
 
 <h3>Book Price Updates</h3>
 
-@if (bookUpdates.Count == 0)
-{
-    <p>No price updates yet.</p>
-}
-else
-{
-    <ul>
-        @foreach (var update in bookUpdates)
-        {
-            <li>@update.Time -
-                Title: @update.Title, 
-                Price: @update.Price</li>
-        }
-    </ul>
-}
+<RadzenChart @ref="bookChart">
+    <RadzenLineSeries Data="@bookPrices" CategoryProperty="Time" Title="Book Price" ValueProperty="Price">
+        <RadzenMarkers Visible="true" MarkerType="MarkerType.Circle" />
+        <RadzenSeriesDataLabels Visible="true" />
+    </RadzenLineSeries>
+</RadzenChart>
 
 @code {
-    private class BookUpdate
+    class BookPriceUpdate
     {
-        public string Title { get; set; }
-        public double Price { get; set; }
         public string Time { get; set; }
+        public double Price { get; set; }
     }
 
-    private List<BookUpdate> bookUpdates = new List<BookUpdate>();
+    RadzenChart bookChart;
+    private List<BookPriceUpdate> bookPrices = new List<BookPriceUpdate>();
     private IDisposable? subscription;
 
     protected override void OnInitialized()
@@ -35,21 +26,19 @@ else
         subscription = Client.OnBookPriceUpdated.Watch().Subscribe(result =>
         {
             var updatedPrice = result.Data.OnBookPriceUpdated.Price;
-            var updatedTitle = result.Data.OnBookPriceUpdated.Title;
             var currentTime = DateTime.Now.ToString("HH:mm:ss");
 
-            bookUpdates.Add(new BookUpdate
+            bookPrices.Add(new BookPriceUpdate
             {
-                Title = updatedTitle,
                 Price = updatedPrice,
                 Time = currentTime
             });
 
+            bookChart.Reload();
             InvokeAsync(StateHasChanged);
         });
     }
 
-    // Unsubscribe when the component is disposed
     public void Dispose()
     {
         subscription?.Dispose();

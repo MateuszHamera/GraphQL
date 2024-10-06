@@ -2,6 +2,7 @@
 using GraphQL.Server.Inputs;
 using GraphQL.Server.Models;
 using GraphQL.Server.Payloads;
+using GraphQL.Server.Services;
 using GraphQL.Server.Subscriptions;
 using HotChocolate.Subscriptions;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,27 @@ namespace GraphQL.Server.Mutations;
 
 public class Mutation
 {
+    private readonly AuthService _authService;
+
+    public Mutation(AuthService authService)
+    {
+        _authService = authService;
+    }
+
+    public LoginPayload Login(string email, string password)
+    {
+        if (email == "admin@admin" && password == "admin")
+        {
+            var token = _authService.GenerateJwtToken(email, "admin");
+            return new LoginPayload(token);
+        }
+        else
+        {
+            var token = _authService.GenerateJwtToken(email, "user");
+            return new LoginPayload(token);
+        }
+    }
+
     public async Task<AddAuthorPayload> AddAuthorAsync(
         AddAuthorInput input,
         [Service] AppDbContext context)

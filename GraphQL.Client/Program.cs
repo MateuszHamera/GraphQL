@@ -2,6 +2,7 @@ using GraphQL.Client;
 using GraphQL.Client.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -15,18 +16,13 @@ builder.Services.AddSingleton<TokenService>();
 
 builder.Services
     .AddMyGraphClient()
-    .ConfigureHttpClient((sp, client) =>
+    .ConfigureHttpClient((provider, client) =>
     {
-        // Synchronously get the token from the TokenService
-        var tokenService = sp.GetRequiredService<TokenService>();
-        var token = tokenService.GetToken();
-
-        if (!string.IsNullOrEmpty(token))
-        {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        }
+        var token = provider.GetRequiredService<TokenService>().GetToken();
 
         client.BaseAddress = new Uri("https://localhost:7034/graphql");
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
     })
     .ConfigureWebSocketClient(client =>
     {

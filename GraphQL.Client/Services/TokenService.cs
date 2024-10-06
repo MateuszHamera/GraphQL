@@ -1,29 +1,18 @@
-﻿using Microsoft.JSInterop;
-
-namespace GraphQL.Client.Services;
+﻿namespace GraphQL.Client.Services;
 
 public class TokenService
 {
-    private readonly IJSRuntime _jsRuntime;
-    private const string TokenKey = "authToken";
+    private string _token;
 
-    public TokenService(IJSRuntime jsRuntime)
-    {
-        _jsRuntime = jsRuntime;
-    }
-
-    // Synchronous method to get token
+    // Asynchronous method to get the token
     public string GetToken()
     {
-        // Synchronously retrieve the token using Task.Run
-        return Task.Run(async () =>
-        {
-            return await _jsRuntime.InvokeAsync<string>("localStorage.getItem", TokenKey);
-        }).Result;
+        return _token ?? string.Empty;
     }
 
-    public async Task SetTokenAsync(string token)
+    public async Task SetToken(string token)
     {
-        await _jsRuntime.InvokeVoidAsync("localStorage.setItem", TokenKey, token);
+        _token = token;
     }
 }
+

@@ -1,0 +1,56 @@
+﻿@page "/login"
+
+@inject MyGraphClient Client
+@inject TokenService TokenService
+@inject NavigationManager NavigationManager
+
+<h3>Login</h3>
+
+<div>
+    <label>Email:</label>
+    <input @bind="email" class="form-control" type="email" />
+</div>
+
+<div>
+    <label>Password:</label>
+    <input @bind="password" class="form-control" type="password" />
+</div>
+
+<button class="btn btn-primary" @onclick="HandleLogin">Login</button>
+
+<p>@loginMessage</p>
+
+@code {
+    private string email = "";
+    private string password = "";
+    private string loginMessage = "";
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            // Call the login mutation using StrawberryShake client
+            var response = await Client.LoginToServer.ExecuteAsync(email, password);
+            var token = response.Data?.LoginToServer?.Token;
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                // Store the token using the TokenService
+                TokenService.SetToken(token);
+
+                loginMessage = $"Login successful! Token {token}" ;
+
+                // Navigate to a protected page (e.g., /authors)
+                //NavigationManager.NavigateTo("/authors");
+            }
+            else
+            {
+                loginMessage = "Login failed. Please check your credentials.";
+            }
+        }
+        catch (Exception ex)
+        {
+            loginMessage = $"Error: {ex.Message}";
+        }
+    }
+}

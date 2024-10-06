@@ -4,6 +4,12 @@ schema {
   subscription: Subscription
 }
 
+enum ApplyPolicy {
+  BEFORE_RESOLVER
+  AFTER_RESOLVER
+  VALIDATION
+}
+
 type Query {
   authors(order: [AuthorSortInput!] where: AuthorFilterInput): [Author!]!
   authorById(id: Int!): Author!
@@ -11,6 +17,7 @@ type Query {
 }
 
 type Mutation {
+  loginToServer(email: String! password: String!): LoginPayload!
   addAuthor(input: AddAuthorInput!): AddAuthorPayload!
   addBook(input: AddBookInput!): AddBookPayload!
   updateBookPrice(bookId: Int! newPrice: Float!): UpdateBookPayload!
@@ -103,8 +110,8 @@ input FloatOperationFilterInput {
   nlte: Float
 }
 
-type AddAuthorPayload {
-  author: Author!
+type LoginPayload {
+  token: String!
 }
 
 type Book {
@@ -121,6 +128,10 @@ type Author {
   name: String!
   age: Int!
   books: [Book!]!
+}
+
+type AddAuthorPayload {
+  author: Author!
 }
 
 input AddAuthorInput {

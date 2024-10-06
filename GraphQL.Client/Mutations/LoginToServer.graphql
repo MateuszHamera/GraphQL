@@ -1,0 +1,5 @@
+mutation LoginToServer($email: String!, $password: String!) {
+  loginToServer(email: $email, password: $password) {
+    token
+  }
+}

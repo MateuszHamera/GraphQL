@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <GraphQL Remove="mutations\LoginToServer.graphql" />
     <GraphQL Remove="queries\GetAuthors.graphql" />
     <GraphQL Remove="subscriptions\OnBookPriceUpdated.graphql" />
   </ItemGroup>
@@ -23,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Mutations\" />
     <Folder Include="Subscriptions\" />
     <Folder Include="Queries\" />
     <Folder Include="wwwroot\js\" />

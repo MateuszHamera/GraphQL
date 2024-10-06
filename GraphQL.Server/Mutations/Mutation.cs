@@ -18,7 +18,7 @@ public class Mutation
         _authService = authService;
     }
 
-    public LoginPayload Login(string email, string password)
+    public LoginPayload LoginToServer(string email, string password)
     {
         if (email == "admin@admin" && password == "admin")
         {

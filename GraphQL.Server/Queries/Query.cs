@@ -22,13 +22,14 @@ public class Query
         int id,
         [Service] AppDbContext context)
     {
-        return await context.Authors.Include(x => x.Books).FirstOrDefaultAsync(x => x.Id == id);
+        return await context.Authors.Include(x => x.Books)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     [Authorize(Policy = "UserPolicy")]
-    public async Task<List<Book>> GetBooks(
+    public IQueryable<Book> GetBooks(
         [Service] AppDbContext context)
     {
-        return await context.Books.ToListAsync();
+        return context.Books;
     }
 }

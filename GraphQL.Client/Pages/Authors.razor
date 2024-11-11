@@ -5,9 +5,6 @@
 <h1>Authors</h1>
 
 <UseGetAuthors Context="result">
-    <LoadingContent>
-        Loading ...
-    </LoadingContent>
     <ChildContent>
         <ul>
             @foreach (var item in result.Authors!)
@@ -20,6 +17,9 @@
         Something went wrong ...<br />
         @result.First().Message
     </ErrorContent>
+    <LoadingContent>
+        Loading ...
+    </LoadingContent>
 </UseGetAuthors>
 
 

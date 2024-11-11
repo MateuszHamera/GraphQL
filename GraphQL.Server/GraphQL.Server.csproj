@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="HotChocolate.AspNetCore" Version="13.9.12" />
-	<PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="13.9.14" />
-	<PackageReference Include="HotChocolate.Data" Version="13.9.13" />
+	<PackageReference Include="HotChocolate.AspNetCore" Version="14.1.0" />
+	<PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="14.1.0" />
+	<PackageReference Include="HotChocolate.Data" Version="14.1.0" />
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
@@ -18,7 +18,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
   </ItemGroup>
 
 </Project>

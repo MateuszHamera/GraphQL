@@ -58,7 +58,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<AuthService>();
 
 builder.Services
-    .AddDbContext<AppDbContext>(options =>
+    .AddDbContextPool<AppDbContext>(options =>
     options.UseSqlite("Data Source=books.db"));
 
 builder.Services.AddAuthorization();
@@ -96,11 +96,20 @@ app.UseEndpoints(endpoints =>
     endpoints?.MapGraphQL();
 });
 
-app.MapGet("authors", (AppDbContext context) => {
-    Query query = new Query();
-    var result = query.GetAuthors(context);
+// Endpoint to get list of authors
+app.MapGet("/api/authors", async (AppDbContext context) =>
+{
+    return await context.Authors.ToListAsync();
+});
 
-    return result;
+// Endpoint to get books for a specific author by author ID
+app.MapGet("/api/authors/{id}/books", async (int id, AppDbContext context) =>
+{
+    var books = await context.Books
+        .Where(book => book.AuthorId == id)
+        .ToListAsync();
+
+    return books.Count > 0 ? Results.Ok(books) : Results.NotFound("Books not found for this author.");
 });
 
 app.Run();

@@ -29,19 +29,15 @@
     {
         try
         {
-            // Call the login mutation using StrawberryShake client
-            var response = await Client.LoginToServer.ExecuteAsync(email, password);
-            var token = response.Data?.LoginToServer?.Token;
+            var response = 
+                await Client.LoginToServer.ExecuteAsync(email, password);
+            var token = response.Data?.LoginToServer.Token;
 
             if (!string.IsNullOrEmpty(token))
             {
-                // Store the token using the TokenService
-                TokenService.SetToken(token);
+                await TokenService.SetToken(token);
 
                 loginMessage = $"Login successful! Token {token}" ;
-
-                // Navigate to a protected page (e.g., /authors)
-                //NavigationManager.NavigateTo("/authors");
             }
             else
             {
